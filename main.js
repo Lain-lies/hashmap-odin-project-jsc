@@ -220,18 +220,15 @@ class HashMap {
   }
 
   expand() {
-    if (this.#occupied > this.#limit) {
-      const keyValuePair = this.entries();
-      this.#capacity *= 2;
-      this.#limit = this.#capacity * this.#loadFactor;
-      this.#occupied = 0;
-      this.keyCache = [];
-      this.clear();
+    const keyValuePair = this.entries();
+    this.#capacity *= 2;
+    this.#limit = this.#capacity * this.#loadFactor;
+    this.#occupied = 0;
+    this.keyCache = [];
+    this.clear();
 
-      console.log(keyValuePair.length);
-      for (const item of keyValuePair) {
-        this.set(item[0], item[1]);
-      }
+    for (const item of keyValuePair) {
+      this.set(item[0], item[1]);
     }
   }
 
@@ -254,26 +251,17 @@ class HashMap {
     }
 
     const list = this.#map[hashCode];
-
-    if (list.getlength() === 0) {
-      list.append(item);
-      this.keyCache.push(key);
-      this.#occupied++;
-      this.expand();
-      return;
-    }
-
     const index = list.find(item);
 
     if (index === null) {
       list.append(item);
       this.keyCache.push(key);
       this.#occupied++;
-      this.expand();
-      return;
+    } else {
+      list.at(index).value = item;
     }
 
-    list.at(index).value = item;
+    if (this.#occupied > this.#limit) this.expand();
   }
 
   get(key) {
@@ -299,7 +287,6 @@ class HashMap {
     if (!this.has(key)) return false;
     const hashCode = this.hash(key);
     const list = this.#map[hashCode];
-    list.toString();
     const index = list.find({ key: key });
     list.removeAt(index);
   }
@@ -346,7 +333,6 @@ class HashMap {
     return keyValuePair;
   }
 }
-
 const test = new HashMap(); // or HashMap() if using a factory
 test.set("apple", "red");
 test.set("banana", "yellow");
@@ -362,9 +348,10 @@ test.set("kite", "pink");
 test.set("lion", "golden");
 test.set("moon", "silver");
 
-// test.set('moon', "tsuki")
-// test.set('apple', 'ringo')
-// test.set('ice cream', 'aisu kurimu')
+test.set("moon", "tsuki");
+test.set("apple", "ringo");
+test.set("ice cream", "aisu kurimu");
 
-console.log(test.keys());
-console.log(test.entries());
+for (let i = 0; i < 12; i++) {
+  test.set(`test${i}`, `test${i + 1}`);
+}
