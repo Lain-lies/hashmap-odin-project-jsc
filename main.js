@@ -219,23 +219,20 @@ class HashMap {
     this.keyCache = [];
   }
 
-  expand(){   
-    if(this.#occupied > this.#limit){
-
-      const temp = this.entries();
+  expand() {
+    if (this.#occupied > this.#limit) {
+      const keyValuePair = this.entries();
       this.#capacity *= 2;
       this.#limit = this.#capacity * this.#loadFactor;
       this.#occupied = 0;
+      this.keyCache = [];
       this.clear();
-      
-      console.log(temp);
-      // for(let i = 0; i < temp.length; i++){
-        
-      //   // this.set(temp[i][0], temp[i][1]);
-      // }
-        
-    }
 
+      console.log(keyValuePair.length);
+      for (const item of keyValuePair) {
+        this.set(item[0], item[1]);
+      }
+    }
   }
 
   hash(key) {
@@ -252,7 +249,7 @@ class HashMap {
     const hashCode = this.hash(key);
     const item = { key: key, value: value };
 
-    if (this.#map[hashCode] === undefined){
+    if (this.#map[hashCode] === undefined) {
       this.#map[hashCode] = new LinkedList();
     }
 
@@ -277,7 +274,6 @@ class HashMap {
     }
 
     list.at(index).value = item;
-
   }
 
   get(key) {
@@ -308,7 +304,7 @@ class HashMap {
     list.removeAt(index);
   }
 
-  length(){
+  length() {
     return this.keyCache.length;
   }
 
@@ -319,10 +315,8 @@ class HashMap {
   keys() {
     const tempCache = [];
 
-    for (const key of this.keyCache){
-
+    for (const key of this.keyCache) {
       if (this.get(key) !== null) tempCache.push(key);
-
     }
 
     this.keyCache = tempCache;
@@ -340,37 +334,37 @@ class HashMap {
     return valuesArray;
   }
 
-  entries(){
+  entries() {
     const keyValuePair = [];
     const keysArray = this.keys();
-    const  valuesArray = this.values();
-    
-    for(let i = 0; i < keysArray.length; i++){
+    const valuesArray = this.values();
+
+    for (let i = 0; i < keysArray.length; i++) {
       keyValuePair.push([keysArray[i], valuesArray[i]]);
     }
 
     return keyValuePair;
   }
-
 }
 
-const test = new HashMap() // or HashMap() if using a factory
-test.set('apple', 'red')
-test.set('banana', 'yellow')
-test.set('carrot', 'orange')
-test.set('dog', 'brown')
-test.set('elephant', 'gray')
-test.set('frog', 'green')
-test.set('grape', 'purple')
-test.set('hat', 'black') 
-test.set('ice cream', 'white')
-test.set('jacket', 'blue')
-test.set('kite', 'pink')
-test.set('lion', 'golden')
-test.set('moon', 'silver')
+const test = new HashMap(); // or HashMap() if using a factory
+test.set("apple", "red");
+test.set("banana", "yellow");
+test.set("carrot", "orange");
+test.set("dog", "brown");
+test.set("elephant", "gray");
+test.set("frog", "green");
+test.set("grape", "purple");
+test.set("hat", "black");
+test.set("ice cream", "white");
+test.set("jacket", "blue");
+test.set("kite", "pink");
+test.set("lion", "golden");
+test.set("moon", "silver");
 
 // test.set('moon', "tsuki")
 // test.set('apple', 'ringo')
 // test.set('ice cream', 'aisu kurimu')
 
-// console.log(test.entries());
+console.log(test.keys());
+console.log(test.entries());
